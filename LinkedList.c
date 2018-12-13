@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 
+int Tarrival =0; 
+Node * clockPointer;
+
 void intializeList(LinkedList * list)
 {
     list->head = list->tail = NULL ;
@@ -15,9 +18,12 @@ void intializeList(LinkedList * list)
 
 void addNode(LinkedList * list , Object value)
 {
+    
 	Node * node = (Node*)malloc(sizeof(Node));
     node->value = value;
     node->next = NULL;
+    node->pinCount = 1;
+    node->arrivalTime = ++Tarrival;
     list->numOfNodes++;
     if(list->head==NULL)
         list->head = list->tail = node ;
@@ -40,6 +46,35 @@ int searchForNode(LinkedList * List ,Object value)
 {
     Node * temp = List->head;
     while(temp != NULL)
-        if(temp->value == value) return 1;
+    {
+        if(temp->value == value) 
+        {
+            temp->pinCount++;
+            return 1;
+        }
+        temp = temp->next;
+    }
     return 0;
+}
+
+void findandReplaceLRU(LinkedList * List, Object value)
+{
+    Node * temp = List->head;
+    Node * LRU = List->head;
+    while(temp != NULL)
+    {
+        if(temp->arrivalTime < LRU->arrivalTime && temp->pinCount < LRU->pinCount)
+        {
+            LRU = temp;
+        }
+        temp = temp->next;
+    }
+    LRU->value =value;
+    LRU->arrivalTime= ++Tarrival;
+    LRU->pinCount = 1;
+}
+
+void MoveAndReplaceClock(LinkedList * List, Object value)
+{
+
 }

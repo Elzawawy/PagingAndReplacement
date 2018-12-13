@@ -15,6 +15,8 @@ typedef int Object;
 typedef struct Node {
     Object value;
     struct Node* next;
+	int pinCount;
+	int arrivalTime;
 }Node;
 
 //Define List Structure itself.
@@ -31,4 +33,6 @@ void addNode(LinkedList * list , Object value);
 int searchForNode(LinkedList * List ,Object value);
 
 void addNode_queue(LinkedList * list, Object value);
+
+void findandReplaceLRU(LinkedList * List, Object value)
 #endif /* LINKEDLIST_H_ */

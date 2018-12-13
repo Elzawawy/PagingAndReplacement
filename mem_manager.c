@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "mem_manager.h"
 #include "LinkedList.h"
+
 int Global_numOfPages;
 ReplacementPolicy Global_replacementPolicy;
 LinkedList Global_linkedList;
@@ -34,7 +35,18 @@ void requestPage(int pageReference)
         break;
 
     case LRU:
-        
+        if(Global_linkedList.numOfNodes < Global_numOfPages)
+        {
+            addNode(&Global_linkedList,pageReference);
+        }
+        else if( searchForNode(&Global_linkedList, pageReference) == 1)
+        {
+            //do nothing. 
+        }
+        else 
+        {
+            findandReplaceLRU(&Global_linkedList, pageReference);
+        }
         break;
 
     case CLOCK:
