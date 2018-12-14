@@ -6,10 +6,7 @@
  */
 #ifndef LINKEDLIST_H_
 #define LINKEDLIST_H_
-//Define NULL
-#ifndef NULL 
-#define NULL   ((void *) 0)
-#endif
+
 //Define Object for configurability.
 typedef int Object;
 
@@ -35,7 +32,7 @@ void addNode(LinkedList * list , Object value);
 
 int searchForNode(LinkedList * List ,Object value);
 
-void addNode_queue(LinkedList * list, Object value);
+void findandReplaceFIFO(LinkedList * list, Object value);
 
 void findandReplaceLRU(LinkedList * List, Object value);
 

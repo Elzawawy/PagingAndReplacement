@@ -7,6 +7,7 @@ int stringCompare( char *s1, char *s2 );
 void main(void)
 {
     int numOfPages;
+    int numOfPageFaults=0;
     char policy[5];
     ReplacementPolicy repPolicy;
     int pageRef = 0;
@@ -40,9 +41,12 @@ void main(void)
     printf("----   -----------------\n");
     while(runningPointer != NULL)
     {
-        requestPage(runningPointer->value);
+        numOfPageFaults += requestPage(runningPointer->value);
         runningPointer = runningPointer->next;
     }
+    printf("-------------------------------------\n");
+    printf("Number of page faults = %d",numOfPageFaults);
+
 }
 
 int stringCompare( char *s1, char *s2 )

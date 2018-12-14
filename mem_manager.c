@@ -12,80 +12,130 @@ void pageReplacer_init(int numOfPages, ReplacementPolicy policy)
     Global_numOfPages = numOfPages;
     Global_replacementPolicy = policy;
     intializeList(&Global_linkedList);
-
 }
 
-void requestPage(int pageReference)
+int requestPage(int pageReference)
 {
+    int Local_pageFaultIndicator=0;
     switch (Global_replacementPolicy)
     {
     case FIFO:
-        if(Global_linkedList.numOfNodes < Global_numOfPages)
+        if (searchForNode(&Global_linkedList, pageReference) == 1)
         {
-            addNode(&Global_linkedList,pageReference);
-            printf("%02d     ",pageReference);
-            Node * runningPointer = Global_linkedList.head;
-            while(runningPointer != NULL)
+            printf("%02d     ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
             {
-                printf("%02d ",runningPointer->value);
+                printf("%02d ", runningPointer->value);
                 runningPointer = runningPointer->next;
             }
             printf("\n");
         }
-        else if( searchForNode(&Global_linkedList, pageReference) == 1)
+        else if (Global_linkedList.numOfNodes < Global_numOfPages)
         {
-            //do nothing. 
+            addNode(&Global_linkedList, pageReference);
+            printf("%02d     ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
+            {
+                printf("%02d ", runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
         }
-        else 
+        else
         {
-            addNode_queue(&Global_linkedList, pageReference);
+            findandReplaceFIFO(&Global_linkedList, pageReference);
+            printf("%02d F   ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
+            {
+                printf("%02d ", runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
+            Local_pageFaultIndicator=1;
         }
         break;
 
     case LRU:
-        if(Global_linkedList.numOfNodes < Global_numOfPages)
+        if (searchForNode(&Global_linkedList, pageReference) == 1)
         {
-            addNode(&Global_linkedList,pageReference);
-            printf("%02d     ",pageReference);
-            Node * runningPointer = Global_linkedList.head;
-            while(runningPointer != NULL)
+            printf("%02d     ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
             {
-                printf("%02d ",runningPointer->value);
+                printf("%02d ", runningPointer->value);
                 runningPointer = runningPointer->next;
             }
             printf("\n");
         }
-        else if( searchForNode(&Global_linkedList, pageReference) == 1)
+        else if (Global_linkedList.numOfNodes < Global_numOfPages)
         {
-            //do nothing. 
+            addNode(&Global_linkedList, pageReference);
+            printf("%02d     ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
+            {
+                printf("%02d ", runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
         }
-        else 
+
+        else
         {
             findandReplaceLRU(&Global_linkedList, pageReference);
+            printf("%02d F   ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
+            {
+                printf("%02d ", runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
+            Local_pageFaultIndicator=1;
         }
         break;
 
     case CLOCK:
-        if(Global_linkedList.numOfNodes < Global_numOfPages)
+        if (searchForNode(&Global_linkedList, pageReference) == 1)
         {
-            addNode(&Global_linkedList,pageReference);
-            printf("%02d     ",pageReference);
-            Node * runningPointer = Global_linkedList.head;
-            while(runningPointer != NULL)
+            printf("%02d     ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
             {
-                printf("%02d ",runningPointer->value);
+                printf("%02d ", runningPointer->value);
                 runningPointer = runningPointer->next;
             }
             printf("\n");
         }
-        else if( searchForNode(&Global_linkedList, pageReference) == 1)
+        else if (Global_linkedList.numOfNodes < Global_numOfPages)
         {
-            //do nothing. 
+            addNode(&Global_linkedList, pageReference);
+            printf("%02d     ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
+            {
+                printf("%02d ", runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
         }
-        else 
+        else
         {
             MoveAndReplaceClock(&Global_linkedList, pageReference);
+            printf("%02d F   ", pageReference);
+            Node *runningPointer = Global_linkedList.head;
+            while (runningPointer != NULL)
+            {
+                printf("%02d ", runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
+            Local_pageFaultIndicator=1;
         }
         break;
     }
+    return Local_pageFaultIndicator;
 }

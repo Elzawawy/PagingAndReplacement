@@ -9,7 +9,6 @@
 
 int Tarrival =0; 
 Node * clockPointer;
-
 void intializeList(LinkedList * list)
 {
     list->head = list->tail = NULL ;
@@ -37,13 +36,20 @@ void addNode(LinkedList * list , Object value)
         clockPointer = list->head;
 }
 
-void addNode_queue(LinkedList * list, Object value)
+void findandReplaceFIFO(LinkedList * list, Object value)
 {
-    Node * temp = list->head;
-    list->head = list->head->next;
-    free(temp);
-    list->numOfNodes--;
-    addNode(list,value);
+    static Node * node = NULL;
+    if(node == NULL)
+        node = list->head;
+    else
+    { 
+        if(node == list->tail)
+            node = list->head;
+        else 
+            node = node->next;
+    }
+    node->value = value;
+
 }
 
 int searchForNode(LinkedList * List ,Object value)
@@ -54,6 +60,7 @@ int searchForNode(LinkedList * List ,Object value)
         if(temp->value == value) 
         {
             temp->pinCount++;
+            temp->arrivalTime=++Tarrival;
             temp->clockPin=1;
             return 1;
         }
@@ -64,11 +71,11 @@ int searchForNode(LinkedList * List ,Object value)
 
 void findandReplaceLRU(LinkedList * List, Object value)
 {
-    Node * temp = List->head;
+    Node * temp = List->head->next;
     Node * LRU = List->head;
     while(temp != NULL)
     {
-        if(temp->arrivalTime < LRU->arrivalTime && temp->pinCount < LRU->pinCount)
+        if(temp->arrivalTime < LRU->arrivalTime && temp->pinCount <= LRU->pinCount)
         {
             LRU = temp;
         }

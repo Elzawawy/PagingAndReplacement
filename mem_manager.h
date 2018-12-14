@@ -9,6 +9,6 @@ typedef enum ReplacementPolicy
 }ReplacementPolicy;
 
 void pageReplacer_init(int numOfPages, ReplacementPolicy policy);
-void requestPage(int pageReference);
+int requestPage(int pageReference);
 
 #endif
