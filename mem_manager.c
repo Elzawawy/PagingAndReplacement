@@ -23,6 +23,14 @@ void requestPage(int pageReference)
         if(Global_linkedList.numOfNodes < Global_numOfPages)
         {
             addNode(&Global_linkedList,pageReference);
+            printf("%02d     ",pageReference);
+            Node * runningPointer = Global_linkedList.head;
+            while(runningPointer != NULL)
+            {
+                printf("%02d ",runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
         }
         else if( searchForNode(&Global_linkedList, pageReference) == 1)
         {
@@ -38,6 +46,14 @@ void requestPage(int pageReference)
         if(Global_linkedList.numOfNodes < Global_numOfPages)
         {
             addNode(&Global_linkedList,pageReference);
+            printf("%02d     ",pageReference);
+            Node * runningPointer = Global_linkedList.head;
+            while(runningPointer != NULL)
+            {
+                printf("%02d ",runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
         }
         else if( searchForNode(&Global_linkedList, pageReference) == 1)
         {
@@ -50,6 +66,26 @@ void requestPage(int pageReference)
         break;
 
     case CLOCK:
+        if(Global_linkedList.numOfNodes < Global_numOfPages)
+        {
+            addNode(&Global_linkedList,pageReference);
+            printf("%02d     ",pageReference);
+            Node * runningPointer = Global_linkedList.head;
+            while(runningPointer != NULL)
+            {
+                printf("%02d ",runningPointer->value);
+                runningPointer = runningPointer->next;
+            }
+            printf("\n");
+        }
+        else if( searchForNode(&Global_linkedList, pageReference) == 1)
+        {
+            //do nothing. 
+        }
+        else 
+        {
+            MoveAndReplaceClock(&Global_linkedList, pageReference);
+        }
         break;
     }
 }

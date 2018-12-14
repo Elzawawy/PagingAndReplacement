@@ -24,6 +24,7 @@ void addNode(LinkedList * list , Object value)
     node->next = NULL;
     node->pinCount = 1;
     node->arrivalTime = ++Tarrival;
+    node->clockPin = 1;
     list->numOfNodes++;
     if(list->head==NULL)
         list->head = list->tail = node ;
@@ -31,6 +32,9 @@ void addNode(LinkedList * list , Object value)
         list->tail->next = node ;
         list->tail = node ;
     }
+    clockPointer = node->next;
+    if( clockPointer == NULL )
+        clockPointer = list->head;
 }
 
 void addNode_queue(LinkedList * list, Object value)
@@ -39,7 +43,7 @@ void addNode_queue(LinkedList * list, Object value)
     list->head = list->head->next;
     free(temp);
     list->numOfNodes--;
-    addNode(&list,value);
+    addNode(list,value);
 }
 
 int searchForNode(LinkedList * List ,Object value)
@@ -50,6 +54,7 @@ int searchForNode(LinkedList * List ,Object value)
         if(temp->value == value) 
         {
             temp->pinCount++;
+            temp->clockPin=1;
             return 1;
         }
         temp = temp->next;
@@ -76,5 +81,29 @@ void findandReplaceLRU(LinkedList * List, Object value)
 
 void MoveAndReplaceClock(LinkedList * List, Object value)
 {
+    Node * temp = clockPointer;
+    while(clockPointer != NULL)
+    {
+        if(clockPointer->clockPin == 0)
+            break;
+        else 
+            clockPointer->clockPin =0;
+        clockPointer = clockPointer->next;     
+    }
+
+    if(clockPointer == NULL)
+    {
+        List->head->value = value;
+        List->head->clockPin =1;
+        clockPointer = List->head->next;
+    }
+    else 
+    {
+        clockPointer->value= value;
+        clockPointer->clockPin=1;
+        clockPointer = clockPointer->next;
+        if( clockPointer == NULL )
+            clockPointer = List->head;
+    }
 
 }
