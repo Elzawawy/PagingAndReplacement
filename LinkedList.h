@@ -14,7 +14,6 @@ typedef int Object;
 typedef struct Node {
     Object value;
     struct Node* next;
-	int pinCount;
 	int arrivalTime;
 	int clockPin;
 }Node;

@@ -21,7 +21,6 @@ void addNode(LinkedList * list , Object value)
 	Node * node = (Node*)malloc(sizeof(Node));
     node->value = value;
     node->next = NULL;
-    node->pinCount = 1;
     node->arrivalTime = ++Tarrival;
     node->clockPin = 1;
     list->numOfNodes++;
@@ -59,7 +58,6 @@ int searchForNode(LinkedList * List ,Object value)
     {
         if(temp->value == value) 
         {
-            temp->pinCount++;
             temp->arrivalTime=++Tarrival;
             temp->clockPin=1;
             return 1;
@@ -75,7 +73,7 @@ void findandReplaceLRU(LinkedList * List, Object value)
     Node * LRU = List->head;
     while(temp != NULL)
     {
-        if(temp->arrivalTime < LRU->arrivalTime && temp->pinCount <= LRU->pinCount)
+        if(temp->arrivalTime < LRU->arrivalTime)
         {
             LRU = temp;
         }
@@ -83,7 +81,6 @@ void findandReplaceLRU(LinkedList * List, Object value)
     }
     LRU->value =value;
     LRU->arrivalTime= ++Tarrival;
-    LRU->pinCount = 1;
 }
 
 void MoveAndReplaceClock(LinkedList * List, Object value)
