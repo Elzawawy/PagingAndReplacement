@@ -89,31 +89,6 @@ void findandReplaceLRU(LinkedList *List, Object value)
 
 void MoveAndReplaceClock(LinkedList *List, Object value)
 {
-    // Node * temp = clockPointer;
-    // while (clockPointer != NULL)
-    // {
-    //     if (clockPointer->clockPin == 0)
-    //         break;
-    //     else
-    //         clockPointer->clockPin = 0;
-    //     clockPointer = clockPointer->next;
-    // }
-
-    // if (clockPointer == NULL)
-    // {
-    //     List->head->value = value;
-    //     List->head->clockPin = 1;
-    //     clockPointer = List->head->next;
-    // }
-    // else
-    // {
-    //     clockPointer->value = value;
-    //     clockPointer->clockPin = 1;
-    //     clockPointer = clockPointer->next;
-    //     if (clockPointer == NULL)
-    //         clockPointer = List->head;
-    // }
-
     if (clockPointer->clockPin == 0)
     {
         clockPointer->value = value;
