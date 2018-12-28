@@ -1,10 +1,60 @@
 #include <stdio.h>
-#include "mem_manager.h"
-#include "LinkedList.h"
+#include <stdlib.h>
 
-int stringCompare( char *s1, char *s2 );
+/*********************** Datatype Definitions*****************/
+//Define Object for configurability.
+typedef int Object;
 
-void main(void)
+//Define Node for the list.
+typedef struct Node {
+    Object value;
+    struct Node* next;
+	int arrivalTime;
+	int clockPin;
+}Node;
+
+//Define List Structure itself.
+typedef struct LinkedList {
+    Node* head;
+    Node* tail;
+    int numOfNodes;
+}LinkedList;
+
+typedef enum ReplacementPolicy
+{
+    FIFO=0,
+    LRU,
+    CLOCK
+}ReplacementPolicy;
+
+/***********************Fucntions Declaration****************************/
+
+void pageReplacer_init(int numOfPages, ReplacementPolicy policy);
+int requestPage(int pageReference);
+void intializeList(LinkedList * list);
+
+void addNode(LinkedList * list , Object value);
+
+int searchForNode(LinkedList * List ,Object value);
+
+void findandReplaceFIFO(LinkedList * list, Object value);
+
+void findandReplaceLRU(LinkedList * List, Object value);
+
+void MoveAndReplaceClock(LinkedList * List, Object value);
+
+int stringCompare( char *s1, const char *s2 );
+
+/******************* Varaibles *************************************/
+int Tarrival = 0;
+Node *clockPointer;
+int Global_numOfPages;
+ReplacementPolicy Global_replacementPolicy;
+LinkedList Global_linkedList;
+
+/************************Code ************************************/
+
+int main(void)
 {
     int numOfPages;
     int numOfPageFaults=0;
@@ -24,7 +74,7 @@ void main(void)
     else if (stringCompare(policy,"CLOCK") == 0)
         repPolicy = CLOCK;
     else 
-        return;
+        return 0;
 
     pageReplacer_init(numOfPages,repPolicy);
     while(1)
@@ -47,9 +97,11 @@ void main(void)
     printf("-------------------------------------\n");
     printf("Number of page faults = %d\n",numOfPageFaults);
 
+return 0;
+
 }
 
-int stringCompare( char *s1, char *s2 )
+int stringCompare( char *s1, const char *s2 )
 {
     unsigned char *p1 = ( unsigned char * )s1;
     unsigned char *p2 = ( unsigned char * )s2;
@@ -57,18 +109,9 @@ int stringCompare( char *s1, char *s2 )
     while ( *p1 && *p1 == *p2 ) ++p1, ++p2;
 
     return ( *p1 > *p2 ) - ( *p2  > *p1 );
-}/*
- * LinkedList.c
- *
- *  Created on: Aug 8, 2018
- *      Author: zawawy
- */
-#include <stdlib.h>
-#include <stdio.h>
-#include "LinkedList.h"
+}
 
-int Tarrival = 0;
-Node *clockPointer;
+
 void intializeList(LinkedList *list)
 {
     list->head = list->tail = clockPointer = NULL;
@@ -180,14 +223,8 @@ void MoveAndReplaceClock(LinkedList *List, Object value)
             clockPointer = List->head;
     }
 }
-#include <stdio.h>
-#include <stdlib.h>
-#include "mem_manager.h"
-#include "LinkedList.h"
 
-int Global_numOfPages;
-ReplacementPolicy Global_replacementPolicy;
-LinkedList Global_linkedList;
+
 
 void pageReplacer_init(int numOfPages, ReplacementPolicy policy)
 {
